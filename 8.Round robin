@@ -1,0 +1,59 @@
+#include<stdio.h>
+struct Process {
+    int processID;
+    int arrivalTime;
+    int burstTime;
+    int remainingTime;
+};
+void roundRobinScheduling(struct Process processes[], int n, int timeQuantum) {
+    int currentTime = 0;
+    int completedProcesses = 0;
+    int processQueue[n];
+
+    // Initialize the process queue
+    for (int i = 0; i < n; i++) {
+        processQueue[i] = i;
+    }
+    while (completedProcesses < n) {
+        for (int i = 0; i < n; i++) {
+            int currentProcessIndex = processQueue[i];
+            if (processes[currentProcessIndex].remainingTime <= 0) {
+                continue;
+            }
+            int executionTime = (processes[currentProcessIndex].remainingTime < timeQuantum) ? processes[currentProcessIndex].remainingTime : timeQuantum;
+            printf("Executing Process %d at time %d for %d units\n", processes[currentProcessIndex].processID, currentTime, executionTime);
+            processes[currentProcessIndex].remainingTime -= executionTime;
+            currentTime += executionTime;
+            if (processes[currentProcessIndex].remainingTime <= 0) {
+                completedProcesses++;
+            }
+            for (int j = i; j < n - 1; j++) {
+                processQueue[j] = processQueue[j + 1];
+            }
+            processQueue[n - 1] = currentProcessIndex;
+
+            break; // Move to the next time unit
+        }
+    }
+}
+
+int main() {
+    int n, timeQuantum;
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+    printf("Enter the time quantum for Round Robin: ");
+    scanf("%d", &timeQuantum);
+    struct Process processes[n];
+    for (int i = 0; i < n; i++) {
+        printf("Enter details for Process %d:\n", i + 1);
+        processes[i].processID = i + 1;
+        printf("Enter arrival time for Process %d: ", i + 1);
+        scanf("%d", &processes[i].arrivalTime);
+        printf("Enter burst time for Process %d: ", i + 1);
+        scanf("%d", &processes[i].burstTime);
+        processes[i].remainingTime = processes[i].burstTime;
+    }
+    roundRobinScheduling(processes, n, timeQuantum);
+
+    return 0;
+}
