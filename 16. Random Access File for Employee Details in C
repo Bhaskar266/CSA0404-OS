@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int empId;
+    char name[50];
+    float salary;
+} Employee;
+
+int main() {
+    FILE *filePtr;
+    Employee emp;
+    filePtr = fopen("employees.bin", "wb");
+    if (filePtr == NULL) {
+        printf("Error opening file for writing.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < 5; ++i) {
+        emp.empId = i + 1;
+        sprintf(emp.name, "Employee %d", i + 1);
+        emp.salary = 1000 * (i + 1);
+        fwrite(&emp, sizeof(Employee), 1, filePtr);
+    }
+
+    fclose(filePtr);
+    filePtr = fopen("employees.bin", "rb");
+    if (filePtr == NULL) {
+        printf("Error opening file for reading.\n");
+        return 1;
+    }
+
+    printf("Employee Details:\n");
+    printf("ID\tName\tSalary\n");
+    while (fread(&emp, sizeof(Employee), 1, filePtr) == 1) {
+        printf("%d\t%s\t%.2f\n", emp.empId, emp.name, emp.salary);
+    }
+
+    fclose(filePtr);
+
+    return 0;
+}
