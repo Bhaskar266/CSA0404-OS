@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    char name[50];
+    int size;
+} File;
+
+typedef struct {
+    char name[50];
+    int numFiles;
+    File files[10];
+} Directory;
+
+Directory directories[10]; 
+
+int main() {
+    int numDirectories;
+    printf("Enter the number of directories: ");
+    scanf("%d", &numDirectories);
+
+    printf("Enter details of each directory:\n");
+    for (int i = 0; i < numDirectories; ++i) {
+        printf("Directory %d name: ", i+1);
+        scanf("%s", directories[i].name);
+        printf("Enter number of files in directory %s: ", directories[i].name);
+        scanf("%d", &directories[i].numFiles);
+        printf("Enter details of each file:\n");
+        for (int j = 0; j < directories[i].numFiles; ++j) {
+            printf("File %d name: ", j+1);
+            scanf("%s", directories[i].files[j].name);
+            printf("File %d size: ", j+1);
+            scanf("%d", &directories[i].files[j].size);
+        }
+    }
+
+    printf("\nDirectory Structure:\n");
+    for (int i = 0; i < numDirectories; ++i) {
+        printf("%s\n", directories[i].name);
+        printf("Name\tSize\n");
+        for (int j = 0; j < directories[i].numFiles; ++j) {
+            printf("%s\t%d\n", directories[i].files[j].name, directories[i].files[j].size);
+        }
+    }
+
+    return 0;
+}
