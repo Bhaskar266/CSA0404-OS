@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure to represent a memory block
+typedef struct MemoryBlock {
+    int id;
+    int size;
+    int allocated;
+} MemoryBlock;
+
+#define NUM_BLOCKS 5
+
+MemoryBlock memory[NUM_BLOCKS];
+
+void initializeMemory() {
+    for (int i = 0; i < NUM_BLOCKS; ++i) {
+        memory[i].id = i;
+        memory[i].size = rand() % 10 + 1;
+        memory[i].allocated = 0;
+    }
+}
+
+void firstFit(int processSize) {
+    for (int i = 0; i < NUM_BLOCKS; ++i) {
+        if (!memory[i].allocated && memory[i].size >= processSize) {
+            printf("Allocated memory block %d for process of size %d\n", memory[i].id, processSize);
+            memory[i].allocated = 1;
+            return;
+        }
+    }
+    printf("No suitable memory block found for process of size %d\n", processSize);
+}
+
+void bestFit(int processSize) {
+    int bestFitIndex = -1;
+    int minFragmentation = INT_MAX;
+
+    for (int i = 0; i < NUM_BLOCKS; ++i) {
+        if (!memory[i].allocated && memory[i].size >= processSize) {
+            int fragmentation = memory[i].size - processSize;
+            if (fragmentation < minFragmentation) {
+                bestFitIndex = i;
+                minFragmentation = fragmentation;
+            }
+        }
+    }
+
+    if (bestFitIndex != -1) {
+        printf("Allocated memory block %d for process of size %d\n", memory[bestFitIndex].id, processSize);
+        memory[bestFitIndex].allocated = 1;
+    } else {
+        printf("No suitable memory block found for process of size %d\n", processSize);
+    }
+}
+
+int main() {
+    srand(time(NULL));
+    initializeMemory();
+
+    int processSize = 6; 
+
+    printf("First Fit Allocation:\n");
+    firstFit(processSize);
+
+    printf("\nBest Fit Allocation:\n");
+    bestFit(processSize);
+
+    return 0;
+}
