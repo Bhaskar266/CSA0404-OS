@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    char name[50];
+    int size;
+} File;
+
+File files[10];
+
+int main() {
+    int numFiles;
+    printf("Enter the number of files: ");
+    scanf("%d", &numFiles);
+
+    printf("Enter details of each file:\n");
+    for (int i = 0; i < numFiles; ++i) {
+        printf("File %d name: ", i+1);
+        scanf("%s", files[i].name);
+        printf("File %d size: ", i+1);
+        scanf("%d", &files[i].size);
+    }
+
+    printf("\nFiles in the directory:\n");
+    printf("Name\tSize\n");
+    for (int i = 0; i < numFiles; ++i) {
+        printf("%s\t%d\n", files[i].name, files[i].size);
+    }
+
+    return 0;
+}
