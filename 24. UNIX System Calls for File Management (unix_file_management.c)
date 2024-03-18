@@ -5,8 +5,6 @@ int main() {
     FILE *file;
     char filename[] = "test.txt";
     char content[] = "This is a test file.";
-
-    // Writing to file
     file = fopen(filename, "w");
     if (file == NULL) {
         printf("Error opening file!\n");
@@ -14,8 +12,6 @@ int main() {
     }
     fprintf(file, "%s\n", content);
     fclose(file);
-
-    // Reading from file
     file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file!\n");
