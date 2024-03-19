@@ -4,7 +4,7 @@ int main()
 {
 char character;
 FILE *fpointer;
-fpointer = fopen("C:/Users/jaith/OneDrive/Documents/source.txt","w"); 
+fpointer = fopen("C:/Users/OneDrive/Documents/source.txt","w"); 
 if(fpointer == NULL)
 {
 printf("Error! The file does not exist.");
